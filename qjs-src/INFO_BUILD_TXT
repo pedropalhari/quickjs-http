@@ -1,0 +1,32 @@
+./qjsc -c -o repl.c -m repl.js
+
+gcc -g -Wall -MMD -MF .obj/repl.o.d -Wno-array-bounds -Wno-format-truncation -D_GNU_SOURCE -DCONFIG_VERSION=\"2020-11-08\" -DCONFIG_BIGNUM -O2 -flto -c -o .obj/repl.o repl.c
+
+./qjsc -fbignum -c -o qjscalc.c qjscalc.js
+
+gcc -g -Wall -MMD -MF .obj/qjscalc.o.d -Wno-array-bounds -Wno-format-truncation -D_GNU_SOURCE -DCONFIG_VERSION=\"2020-11-08\" -DCONFIG_BIGNUM -O2 -flto -c -o .obj/qjscalc.o qjscalc.c
+
+gcc -g -flto -rdynamic -o qjs .obj/qjs.o .obj/repl.o .obj/quickjs.o .obj/libregexp.o .obj/libunicode.o .obj/cutils.o .obj/quickjs-libc.o .obj/libbf.o .obj/qjscalc.o -lm -ldl -lpthread
+
+./qjsc -e -fno-string-normalize -fno-map -fno-promise -fno-typedarray -fno-typedarray -fno-regexp -fno-json -fno-eval -fno-proxy -fno-date -fno-module-loader -fno-bigint -o hello.c examples/hello.js
+
+gcc -g -Wall -MMD -MF .obj/hello.o.d -Wno-array-bounds -Wno-format-truncation -D_GNU_SOURCE -DCONFIG_VERSION=\"2020-11-08\" -DCONFIG_BIGNUM -O2 -flto -c -o .obj/hello.o hello.c
+
+gcc -g -flto -o examples/hello .obj/hello.o .obj/quickjs.o .obj/libregexp.o .obj/libunicode.o .obj/cutils.o .obj/quickjs-libc.o .obj/libbf.o -lm -ldl -lpthread
+
+./qjsc -fno-string-normalize -fno-map -fno-promise -fno-typedarray -fno-typedarray -fno-regexp -fno-json -fno-eval -fno-proxy -fno-date -m -o examples/hello_module examples/hello_module.js
+
+./qjsc -e -M examples/fib.so,fib -m -o test_fib.c examples/test_fib.js
+
+gcc -g -Wall -MMD -MF .obj/test_fib.o.d -Wno-array-bounds -Wno-format-truncation -D_GNU_SOURCE -DCONFIG_VERSION=\"2020-11-08\" -DCONFIG_BIGNUM -O2 -flto -c -o .obj/test_fib.o test_fib.c
+
+gcc -g -flto -o examples/test_fib .obj/test_fib.o .obj/examples/fib.o libquickjs.lto.a -lm -ldl -lpthread
+
+
+
+
+
+
+
+Aparentemente isso é usado
+gcc -g -Wall -MMD -MF .obj/fib.o.d -Wno-array-bounds -Wno-format-truncation -D_GNU_SOURCE -DCONFIG_VERSION=\"2020-11-08\" -DCONFIG_BIGNUM -O2 -flto -c -o .obj/examples/fib.o examples/fib.c
