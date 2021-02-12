@@ -5,6 +5,24 @@ import path from "path";
 
 let libToBeCompiled = argv[2];
 
+/**
+ * WARNING!
+ * 
+ * THIS CODE IS UTTERLY RIDICULOUS
+ * 
+ * I'm dumb, so what this code does is:
+ * 
+ * - Pick up a .c file
+ * - Put it in the /examples quickjs folder
+ * - Compile it as the fibonacci example (because that worked)
+ * - Get the .so from fibonacci and rename it to lib.so
+ * - Put it in the executable
+ * 
+ * Yes, I'm using an entire toolchain to build a single .so
+ * because I'm dumb enough to find why I can't build it with the commands
+ * I tried so far. And I want to progress into making an usable HTTP server for quickjs 
+ * first. So this will have to wait.
+ */
 (async () => {
   let libContentsBuffer = await fs.readFile(libToBeCompiled);
   let libContents = libContentsBuffer.toString();
